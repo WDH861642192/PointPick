@@ -1,2 +1,2 @@
 # android-push-from-mac
-![image](https://github.com/WDH861642192/android-push-from-mac/raw/maste/Cache_616c71c76d591f39.jpg)
+好吧，我承认，第一次用，，图片上传没用成功，，，
