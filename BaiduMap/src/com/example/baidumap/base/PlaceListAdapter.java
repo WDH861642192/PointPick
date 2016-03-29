@@ -1,10 +1,5 @@
 package com.example.baidumap.base;
-/** * @author  作者 E-mail: 194093798@qq.com 
- * @date 创建时间：2016年2月22日 上午11:44:22 
- * @version 1.0 
- * @parameter  
- * @since  
- * @return  */
+
 
 import java.io.ObjectOutputStream.PutField;
 import java.util.HashMap;
