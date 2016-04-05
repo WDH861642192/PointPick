@@ -349,7 +349,7 @@ public class MainActivity extends Activity implements
 				// 获取当前MapView中心屏幕坐标对应的地理坐标
 				LatLng currentLatLng;
 				currentLatLng = mBaiduMap.getProjection().fromScreenLocation(
-						mCenterPoint);
+						mBaiduMap.getMapStatus().targetScreen);
 				System.out.println("----" + mCenterPoint.x);
 				System.out.println("----" + currentLatLng.latitude);
 				// 发起反地理编码检索
