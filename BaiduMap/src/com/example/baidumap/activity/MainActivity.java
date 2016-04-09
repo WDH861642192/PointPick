@@ -39,7 +39,9 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,7 +51,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends Activity implements
 		OnGetGeoCoderResultListener {
-
+    ImageView mImageView;
 	MapView mMapView;
 	BaiduMap mBaiduMap;
 	ImageView mSelectImg;
@@ -117,10 +119,13 @@ public class MainActivity extends Activity implements
 		// startActivity(intent);
 		// }
 		// });
+		
 
 		// 初始化地图
 		mMapView = (MapView) findViewById(R.id.chooseplace_bmapView);
 		mSearchTextView = (EditText) findViewById(R.id.search_point);
+		mImageView = (ImageView) findViewById(R.id.locationimg);
+		mImageView.setOnClickListener(new MyLocationListener());
 		mCurrentMarker = BitmapDescriptorFactory
 				.fromResource(R.drawable.icon_marka);
 		// mChooseinf=BitmapDescriptorFactory.fromResource(R.drawable.);
@@ -179,19 +184,20 @@ public class MainActivity extends Activity implements
 		// 初始化当前MapView中心屏幕坐标，初始化当前地理坐标
 		mCenterPoint = mBaiduMap.getMapStatus().targetScreen;
 		mLoactionLatLng = mBaiduMap.getMapStatus().target;
+		if (isFirstLoc && mLantitude != 0 && mLongtitude != 0) {
+			mLoactionLatLng = new LatLng(mLantitude, mLongtitude);
+			// 实现动画跳转
+			MapStatusUpdate u = MapStatusUpdateFactory
+					.newLatLng(mLoactionLatLng);
+			mBaiduMap.animateMapStatus(u);
 
+			mGeoCoder.reverseGeoCode((new ReverseGeoCodeOption())
+					.location(mLoactionLatLng));
+		}
 		// 定位
-		mBaiduMap.setMyLocationEnabled(true);
-		mLocationClient = new LocationClient(this);
-		mListner = new MyBDLocationListner();
-		mLocationClient.registerLocationListener(mListner);
-		LocationClientOption option = new LocationClientOption();
-		option.setOpenGps(true);// 打开gps
-		option.setCoorType("bd09ll"); // 设置坐标类型
-		option.setScanSpan(0);
-		mLocationClient.setLocOption(option);
-		mLocationClient.start();
-
+		else {
+			Location();
+		}
 		// 周边位置列表
 		mListView = (ListView) findViewById(R.id.place_list);
 		mListView.setOnItemClickListener(itemClickListener);
@@ -428,5 +434,35 @@ public class MainActivity extends Activity implements
 	//
 	// return popupWindow;
 	// }
+	private void Location() {
+		mBaiduMap.setMyLocationEnabled(true);
+		if (mLocationClient == null) {
+			mLocationClient = new LocationClient(this);
+			mListner = new MyBDLocationListner();
+			mLocationClient.registerLocationListener(mListner);
+			LocationClientOption option = new LocationClientOption();
+			option.setOpenGps(true);// 打开gps
+			option.setCoorType("bd09ll"); // 设置坐标类型
+			option.setScanSpan(0);
+			mLocationClient.setLocOption(option);
+		}
+		mLocationClient.start();
+
+	}
+
+	private class MyLocationListener implements OnClickListener {
+
+		@Override
+		public void onClick(View arg0) {
+			// TODO Auto-generated method stub
+			Location();
+			if(!isFirstLoc)
+				turnBack();
+			resetMarker(mLoactionLatLng);
+				
+		}
+
+	}
+
 
 }
