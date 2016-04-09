@@ -72,5 +72,9 @@ ReverseGeoCodeResult
 
 > http://download.csdn.net/detail/qq_28224989/9481886
 
+不知道为啥，CSDN的资源是404，直接上百度云
+
+> http://pan.baidu.com/s/1boH8YGf
+
 源码
 > https://github.com/WDH861642192/android-push-from-mac/tree/master/BaiduMap
